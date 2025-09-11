@@ -1,11 +1,16 @@
 function Title () {
-    return (<ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-    </ul>) 
-       
-
+    return (
+        <div>
+    <h1>titolo principale</h1>
+    <h2>sottotitolo</h2>
+    <p>paragrafo</p>
+    <ol>
+        <li> lista 1</li>
+        <li> lista 2</li>
+        <li> lista 3</li>
+    </ol>
+       </div>
+    );
 }
 
 export default Title;

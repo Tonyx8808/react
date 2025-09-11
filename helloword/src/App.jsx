@@ -9,9 +9,7 @@ function App() {
   return (
      <>
     <Title />
-    <Title />
- <Title />
-     <Title />
+ 
  </>
    
   )
