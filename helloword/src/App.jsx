@@ -3,7 +3,8 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import Title from './components/Title'
-import HelloWord from './ClassHelloWord'
+import HelloWord from './components/ClassHelloWord'
+import Counter from './components/contatore'
 
 function App() {
 
@@ -11,6 +12,7 @@ function App() {
      <>
     <Title />
     <HelloWord />
+    <Counter />
  
  </>
    
