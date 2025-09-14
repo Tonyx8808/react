@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 function Counter (){
+    const [count, setCount] = useState(0);
     return (<div>
-Count 0
+ Count: {count}
     </div> )
 }
 
