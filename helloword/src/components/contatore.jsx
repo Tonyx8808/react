@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Counter() {
   const [count, setCount] = useState(0);
@@ -15,6 +15,12 @@ function Counter() {
   const handleReset = () => {
     setCount(0);
   };
+  //registrare ogni volta che count cambia
+useEffect(() => {
+console.log("useEffect")
+}, [count]);
+
+
 
   return (
     <div>
