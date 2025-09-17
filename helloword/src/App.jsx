@@ -13,7 +13,7 @@ function App() {
       <HelloWord />
       <Counter />
       <TextInput />  {/* Qui era textInput, cambiato in maiuscolo */}
-      < LoginForm/> {/* Qui mettiamo il login */}
+      < LoginForm /> {/* Qui mettiamo il login */}
       <Login />
     </>
   );
