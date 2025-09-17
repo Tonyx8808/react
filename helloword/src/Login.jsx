@@ -12,9 +12,11 @@ const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const form = new FormData(event.target);
-    const data = Object.fromEntries(form);
-    console.log("Dati inviati:", data);
+    const first = firstName.current.value;
+    const last = lastName.current.value;
+
+    console.log("Dati inviati:", { first, last });
+    alert(`Firstname: ${first}\nLastname: ${last}`);
 
     // sposta il focus sul secondo input dopo l'invio
     lastName.current.focus();
