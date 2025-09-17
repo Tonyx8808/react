@@ -15,6 +15,7 @@ const LoginForm = () => {
 
     return (
         <form onSubmit={handleSubmit}>
+            <h1>Login form</h1>
             <input
                 type='text'
                 placeholder='Username'

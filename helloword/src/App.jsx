@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import Title from './components/Title';
-import HelloWord from './components/ClassHelloWord';
+import HelloWord from './components/HelloWord';
 import Counter from './components/Counter';
 import TextInput from './TextInput';
 import LoginForm from './LoginForm';
+import Login from './Login';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Counter />
       <TextInput />  {/* Qui era textInput, cambiato in maiuscolo */}
       < LoginForm/> {/* Qui mettiamo il login */}
+      <Login />
     </>
   );
 }
