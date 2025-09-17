@@ -8,7 +8,10 @@ function Counter() {
   };
 //button decrement
   const handleDecrement = () => {
-    setCount((_count) => _count - 1);
+   setCount((_count) => _count - 1); //scende sotto lo 0
+    if(count > 0 ){
+       setCount((_count) => _count - 1); //scende fino allo 0
+    }
   };
   //button reset
 

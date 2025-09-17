@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import Title from './components/Title';
 import HelloWord from './components/ClassHelloWord';
-import Counter from './components/contatore';
-import TextInput from './Textinput';
-import LoginForm from './login';
+import Counter from './components/Counter';
+import TextInput from './TextInput';
+import LoginForm from './LoginForm';
 
 function App() {
   return (
