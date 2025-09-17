@@ -8,6 +8,7 @@ const LoginForm = () => {
     // funzione per gestire l invio del form
     const handleSubmit = (e) => {
         e.preventDefault(); // previene il refresh della pagina
+        alert(`Username: ${username}\nPassword: ${password}`);
         console.log("Username", username);
         console.log("Password", password);
     };
@@ -26,7 +27,7 @@ const LoginForm = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
-            <button type='submit'>Login</button>
+            <button type='submit'>Submit</button>
         </form>
     );
 };
