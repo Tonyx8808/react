@@ -6,6 +6,7 @@ import TextInput from './TextInput';
 import LoginForm from './LoginForm';
 import Login from './Login';
 import Lista from '../../Lista';
+import Fetch from './Fetch';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       < LoginForm /> {/* Qui mettiamo il login */}
       <Login />
       <Lista />
+      <Fetch />
     </>
   );
 }
