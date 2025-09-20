@@ -19,7 +19,7 @@ function App() {
       < LoginForm /> {/* Qui mettiamo il login */}
       <Login />
       <Lista />
-      <Fetch url="https://api.api-onepiece.com/v2/swords/en"  />
+      <Fetch />
     
     </>
   );
