@@ -1,62 +1,30 @@
-import { useState, useEffect } from "react";
+import React from "react";
+import useFetch from "./useFetch";
 
-const API_URL = "https://api.api-onepiece.com/v2/swords/en"; // endpoint lista spade
+function Fetch({ url }) {
+  const { data, loading, error } = useFetch(url);
 
-const Fetch = () => {
-  const [swords, setSwords] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch(API_URL);
-
-      if (!response.ok) {
-        throw new Error("Errore durante il caricamento.");
-      }
-
-      const data = await response.json();
-      setSwords(data); // assumendo che data sia un array di spade
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  if (loading) return <p>Caricamento...</p>;
+  if (error) return <p>Errore: {error}</p>;
+  if (!data) return <p>Nessun dato disponibile</p>;
 
   return (
     <>
-      <h2>Lista Spade One Piece ⚔️</h2>
-      {loading ? (
-        <p>Caricamento...</p>
-      ) : (
-        <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%" }}>
-          <thead>
-            <tr>
-            
-              <th>Name</th>
-              <th>Description</th>
-             
-            </tr>
-          </thead>
-          <tbody>
-            {swords.map((sword) => (
-              <tr key={sword.id}>
-                
-                <td>{sword.name}</td>
-                <td>{sword.description}</td>
-              
-              </tr>
-            ))}
-          </tbody>
-        </table>
-       
-      )}
-     </>
+      <h1>Swords One Piece</h1>
+      <ul>
+        {data.map((sword, index) => (
+          <li key={index}>
+            <strong>{sword.name}</strong> ({sword.roman_name}) <br />
+            <em>Type:</em> {sword.type || "N/A"} <br />
+            <em>Category:</em> {sword.category || "N/A"} <br />
+            <em>Description:</em> {sword.description || "Nessuna descrizione"} <br />
+            <em>Destroyed:</em> {sword.isDestroy ? "Yes" : "No"}
+            <hr />
+          </li>
+        ))}
+      </ul>
+    </>
   );
-};
+}
 
 export default Fetch;

@@ -8,6 +8,7 @@ import Login from './Login';
 import Lista from '../../Lista';
 import Fetch from './Fetch';
 
+
 function App() {
   return (
     <>
@@ -18,7 +19,8 @@ function App() {
       < LoginForm /> {/* Qui mettiamo il login */}
       <Login />
       <Lista />
-      <Fetch />
+      <Fetch url="https://api.api-onepiece.com/v2/swords/en"  />
+    
     </>
   );
 }
