@@ -7,6 +7,7 @@ import LoginForm from './LoginForm';
 import Login from './Login';
 import Lista from '../../Lista';
 import Fetch from './Fetch';
+import TodoList from './Todos';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       <Login />
       <Lista />
       <Fetch />
+      < TodoList />
     
     </>
   );
