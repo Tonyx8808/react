@@ -43,11 +43,33 @@ function useFetch(url) {
   return { data, loading, error };
 }
 
+// Hook personalizzato per filtrare i to-do
+function useFilteredTodos(todos, searchTerm) {
+  const [filteredTodos, setFilteredTodos] = useState([]);
+
+  useEffect(() => {
+    if (!searchTerm) {
+      setFilteredTodos(todos);
+    } else {
+      const lowerCaseTerm = searchTerm.toLowerCase();
+      const filtered = todos.filter((todo) =>
+        todo.title.toLowerCase().includes(lowerCaseTerm)
+      );
+      setFilteredTodos(filtered);
+    }
+  }, [todos, searchTerm]);
+
+  return filteredTodos;
+}
+
 // Componente TodoList
 export default function TodoList() {
   const { data: todos, loading, error } = useFetch(
     "https://jsonplaceholder.typicode.com/todos"
   );
+  const [search, setSearch] = useState("");
+
+  const filteredTodos = useFilteredTodos(todos || [], search);
 
   if (loading) {
     return <p>Caricamento in corso...</p>;
@@ -60,8 +82,17 @@ export default function TodoList() {
   return (
     <div>
       <h1>Lista To-Do</h1>
+      
+      {/* Campo di input per la ricerca */}
+      <input
+        type="text"
+        placeholder="Cerca un to-do..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
       <ul>
-        {todos.slice(0, 10).map((todo) => (
+        {filteredTodos.slice(0, 10).map((todo) => (
           <li key={todo.id}>
             {todo.title} [{todo.completed ? "Completato" : "Da fare"}]
           </li>
