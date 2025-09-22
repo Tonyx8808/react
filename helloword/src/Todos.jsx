@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 // Hook personalizzato per il fetch
 function useFetch(url) {
@@ -71,6 +71,11 @@ export default function TodoList() {
 
   const filteredTodos = useFilteredTodos(todos || [], search);
 
+  // funzione memorizzata con useCallback
+  const handleSearchChange = useCallback((e) => {
+    setSearch(e.target.value);
+  }, []);
+
   if (loading) {
     return <p>Caricamento in corso...</p>;
   }
@@ -82,13 +87,12 @@ export default function TodoList() {
   return (
     <div>
       <h1>Lista To-Do</h1>
-      
-      {/* Campo di input per la ricerca */}
+
       <input
         type="text"
         placeholder="Cerca un to-do..."
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={handleSearchChange}
       />
 
       <ul>
