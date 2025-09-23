@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useMemo /*, useCallback */ } from "react";
 
 // Hook personalizzato per il fetch
 function useFetch(url) {
@@ -43,25 +43,6 @@ function useFetch(url) {
   return { data, loading, error };
 }
 
-// Hook personalizzato per filtrare i to-do
-function useFilteredTodos(todos, searchTerm) {
-  const [filteredTodos, setFilteredTodos] = useState([]);
-
-  useEffect(() => {
-    if (!searchTerm) {
-      setFilteredTodos(todos);
-    } else {
-      const lowerCaseTerm = searchTerm.toLowerCase();
-      const filtered = todos.filter((todo) =>
-        todo.title.toLowerCase().includes(lowerCaseTerm)
-      );
-      setFilteredTodos(filtered);
-    }
-  }, [todos, searchTerm]);
-
-  return filteredTodos;
-}
-
 // Componente TodoList
 export default function TodoList() {
   const { data: todos, loading, error } = useFetch(
@@ -69,12 +50,30 @@ export default function TodoList() {
   );
   const [search, setSearch] = useState("");
 
-  const filteredTodos = useFilteredTodos(todos || [], search);
+  // 🔹 Filtraggio ottimizzato con useMemo
+  const filteredTodos = useMemo(() => {
+    console.log("🔄 Ricalcolo lista filtrata...");
 
-  // funzione memorizzata con useCallback
+    if (!todos) return [];
+    if (!search) return todos;
+
+    const lowerCaseTerm = search.toLowerCase();
+    return todos.filter((todo) =>
+      todo.title.toLowerCase().includes(lowerCaseTerm)
+    );
+  }, [todos, search]);
+
+  // 🔹 Funzione semplice
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  /*
+  // 🔹 Versione con useCallback (se servisse)
   const handleSearchChange = useCallback((e) => {
     setSearch(e.target.value);
   }, []);
+  */
 
   if (loading) {
     return <p>Caricamento in corso...</p>;
