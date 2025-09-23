@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo /*, useCallback */ } from "react";
+import React, { useState, useEffect, useMemo, useRef /*, useCallback */ } from "react";
 
 // Hook personalizzato per il fetch
 function useFetch(url) {
@@ -50,6 +50,16 @@ export default function TodoList() {
   );
   const [search, setSearch] = useState("");
 
+  // 🔹 Ref per l'input di ricerca
+  const searchInputRef = useRef(null);
+
+  // 🔹 Imposta il focus sull'input al mount del componente
+  useEffect(() => {
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, []);
+
   // 🔹 Filtraggio ottimizzato con useMemo
   const filteredTodos = useMemo(() => {
     console.log("🔄 Ricalcolo lista filtrata...");
@@ -88,6 +98,7 @@ export default function TodoList() {
       <h1>Lista To-Do</h1>
 
       <input
+        ref={searchInputRef} // 🔹 collega la ref all'input
         type="text"
         placeholder="Cerca un to-do..."
         value={search}
