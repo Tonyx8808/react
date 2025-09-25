@@ -1,64 +1,47 @@
-import React, { useState, useMemo, useRef, useEffect, useContext } from "react";
-import { TodoContext } from "./TodoContext";
+import React, { createContext, useState, useEffect } from "react";
 
-export default function TodoList() {
-  const { todos, loading, error } = useContext(TodoContext);
-  const [search, setSearch] = useState("");
+// Creiamo il contesto
+export const TodoContext = createContext();
 
-  // Ref per focus automatico
-  const searchInputRef = useRef(null);
+// Provider che gestisce i to-do
+export function TodoProvider({ children }) {
+  const [todos, setTodos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    if (searchInputRef.current) {
-      searchInputRef.current.focus();
+    let ignore = false;
+
+    async function fetchTodos() {
+      try {
+        setLoading(true);
+        const response = await fetch("https://jsonplaceholder.typicode.com/todos");
+        if (!response.ok) throw new Error("Errore nella risposta del server");
+
+        const json = await response.json();
+        if (!ignore) {
+          setTodos(json);
+          setError(null);
+        }
+      } catch (err) {
+        if (!ignore) {
+          setError(err.message);
+          setTodos([]);
+        }
+      } finally {
+        if (!ignore) setLoading(false);
+      }
     }
+
+    fetchTodos();
+    return () => {
+      ignore = true;
+    };
   }, []);
-
-  // Filtraggio ottimizzato con useMemo
-  const filteredTodos = useMemo(() => {
-    console.log("🔄 Ricalcolo lista filtrata...");
-    if (!todos) return [];
-    if (!search) return todos;
-
-    const lowerCaseTerm = search.toLowerCase();
-    return todos.filter((todo) =>
-      todo.title.toLowerCase().includes(lowerCaseTerm)
-    );
-  }, [todos, search]);
-
-  // Gestione input
-  const handleSearchChange = (e) => {
-    setSearch(e.target.value);
-  };
-
-  /*
-  // 🔹 Versione con useCallback (se servisse)
-  const handleSearchChange = useCallback((e) => {
-    setSearch(e.target.value);
-  }, []);
-  */
-
-  if (loading) return <p>Caricamento in corso...</p>;
-  if (error) return <p>Errore: {error}</p>;
 
   return (
-    <div>
-      <h1>Lista To-Do</h1>
-
-      <input
-        ref={searchInputRef}
-        type="text"
-        placeholder="Cerca un to-do..."
-        value={search}
-        onChange={handleSearchChange}
-      />
-
-      <ul>
-        {filteredTodos.slice(0, 10).map((todo) => (
-          <li key={todo.id}>
-            {todo.title} [{todo.completed ? "Completato" : "Da fare"}]
-          </li>
-        ))}
-      </ul>
-    </div>
+    <TodoContext.Provider value={{ todos, setTodos, loading, error }}>
+      {children}
+    </TodoContext.Provider>
   );
 }
