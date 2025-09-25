@@ -1,69 +1,21 @@
-import React, { useState, useEffect, useMemo, useRef /*, useCallback */ } from "react";
+import React, { useState, useMemo, useRef, useEffect, useContext } from "react";
+import { TodoContext } from "./TodoContext";
 
-// Hook personalizzato per il fetch
-function useFetch(url) {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    let ignore = false;
-
-    async function fetchData() {
-      try {
-        setLoading(true);
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Errore nella risposta del server");
-        }
-        const json = await response.json();
-        if (!ignore) {
-          setData(json);
-          setError(null);
-        }
-      } catch (err) {
-        if (!ignore) {
-          setError(err.message);
-          setData(null);
-        }
-      } finally {
-        if (!ignore) {
-          setLoading(false);
-        }
-      }
-    }
-
-    fetchData();
-
-    return () => {
-      ignore = true;
-    };
-  }, [url]);
-
-  return { data, loading, error };
-}
-
-// Componente TodoList
 export default function TodoList() {
-  const { data: todos, loading, error } = useFetch(
-    "https://jsonplaceholder.typicode.com/todos"
-  );
+  const { todos, loading, error } = useContext(TodoContext);
   const [search, setSearch] = useState("");
 
-  // 🔹 Ref per l'input di ricerca
+  // Ref per focus automatico
   const searchInputRef = useRef(null);
-
-  // 🔹 Imposta il focus sull'input al mount del componente
   useEffect(() => {
     if (searchInputRef.current) {
       searchInputRef.current.focus();
     }
   }, []);
 
-  // 🔹 Filtraggio ottimizzato con useMemo
+  // Filtraggio ottimizzato con useMemo
   const filteredTodos = useMemo(() => {
     console.log("🔄 Ricalcolo lista filtrata...");
-
     if (!todos) return [];
     if (!search) return todos;
 
@@ -73,7 +25,7 @@ export default function TodoList() {
     );
   }, [todos, search]);
 
-  // 🔹 Funzione semplice
+  // Gestione input
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
@@ -85,20 +37,15 @@ export default function TodoList() {
   }, []);
   */
 
-  if (loading) {
-    return <p>Caricamento in corso...</p>;
-  }
-
-  if (error) {
-    return <p>Errore: {error}</p>;
-  }
+  if (loading) return <p>Caricamento in corso...</p>;
+  if (error) return <p>Errore: {error}</p>;
 
   return (
     <div>
       <h1>Lista To-Do</h1>
 
       <input
-        ref={searchInputRef} // 🔹 collega la ref all'input
+        ref={searchInputRef}
         type="text"
         placeholder="Cerca un to-do..."
         value={search}
